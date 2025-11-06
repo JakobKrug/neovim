@@ -977,8 +977,8 @@ require('lazy').setup({
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'custom.plugins.neo-tree',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
@@ -1015,25 +1015,32 @@ require('lazy').setup({
 -- Set clipboard to use system clipboard
 vim.opt.clipboard = 'unnamedplus'
 
--- For Wayland with wl-clipboard
-vim.g.clipboard = {
-  name = 'wl-clipboard',
-  copy = {
-    ['+'] = 'wl-copy --type text/plain',
-    ['*'] = 'wl-copy --type text/plain --primary',
-  },
-  paste = {
-    ['+'] = 'wl-paste --no-newline',
-    ['*'] = 'wl-paste --no-newline --primary',
-  },
-  cache_enabled = true,
-}
+---- For Wayland with wl-clipboard
+--vim.g.clipboard = {
+--  name = 'wl-clipboard',
+--  copy = {
+--    ['+'] = 'wl-copy --type text/plain',
+--    ['*'] = 'wl-copy --type text/plain --primary',
+--  },
+--  paste = {
+--    ['+'] = 'wl-paste --no-newline',
+--    ['*'] = 'wl-paste --no-newline --primary',
+--  },
+--  cache_enabled = true,
+--}
+--
+---- Set Keybinds to yank to System Clipboard
+--vim.keymap.set({ 'n', 'v' }, '<Leader>y', '"+y', { desc = 'Copy to system clipboard' })
+--vim.keymap.set({ 'n', 'v' }, '<Leader>Y', '"+Y', { desc = 'Copy line to system clipboard' })
+--vim.keymap.set({ 'n', 'v' }, '<Leader>p', '"+p', { desc = 'Paste from system clipboard' })
+--vim.keymap.set({ 'n', 'v' }, '<Leader>P', '"+P', { desc = 'Paste before from system clipboard' })
 
--- Better keybindings that work reliably
-vim.keymap.set({ 'n', 'v' }, '<Leader>y', '"+y', { desc = 'Copy to system clipboard' })
-vim.keymap.set({ 'n', 'v' }, '<Leader>Y', '"+Y', { desc = 'Copy line to system clipboard' })
-vim.keymap.set({ 'n', 'v' }, '<Leader>p', '"+p', { desc = 'Paste from system clipboard' })
-vim.keymap.set({ 'n', 'v' }, '<Leader>P', '"+P', { desc = 'Paste before from system clipboard' })
+-- Netrw (Texplore) configuration
+vim.g.netrw_banner = 0 -- Hide the banner
+vim.g.netrw_liststyle = 3 -- Tree style listing
+vim.g.netrw_browse_split = 4 -- Open in previous window
+vim.g.netrw_altv = 1 -- Open splits to the right
+vim.g.netrw_winsize = 25 -- Initial size 25%
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

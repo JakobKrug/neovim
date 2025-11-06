@@ -777,19 +777,19 @@ require('lazy').setup({
     },
   },
 
-  { -- Autocompletion
+  { -- autocompletion
     'saghen/blink.cmp',
-    event = 'VimEnter',
+    event = 'vimenter',
     version = '1.*',
     dependencies = {
-      -- Snippet Engine
+      -- snippet engine
       {
-        'L3MON4D3/LuaSnip',
+        'l3mon4d3/luasnip',
         version = '2.*',
         build = (function()
-          -- Build Step is needed for regex support in snippets.
-          -- This step is not supported in many windows environments.
-          -- Remove the below condition to re-enable on windows.
+          -- build step is needed for regex support in snippets.
+          -- this step is not supported in many windows environments.
+          -- remove the below condition to re-enable on windows.
           if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
             return
           end
@@ -797,7 +797,7 @@ require('lazy').setup({
         end)(),
         dependencies = {
           -- `friendly-snippets` contains a variety of premade snippets.
-          --    See the README about individual language/framework/plugin snippets:
+          --    see the readme about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
           -- {
           --   'rafamadriz/friendly-snippets',
@@ -811,45 +811,45 @@ require('lazy').setup({
       'folke/lazydev.nvim',
     },
     --- @module 'blink.cmp'
-    --- @type blink.cmp.Config
+    --- @type blink.cmp.config
     opts = {
       keymap = {
         -- 'default' (recommended) for mappings similar to built-in completions
         --   <c-y> to accept ([y]es) the completion.
-        --    This will auto-import if your LSP supports it.
-        --    This will expand snippets if the LSP sent a snippet.
+        --    this will auto-import if your lsp supports it.
+        --    this will expand snippets if the lsp sent a snippet.
         -- 'super-tab' for tab to accept
         -- 'enter' for enter to accept
         -- 'none' for no mappings
         --
-        -- For an understanding of why the 'default' preset is recommended,
+        -- for an understanding of why the 'default' preset is recommended,
         -- you will need to read `:help ins-completion`
-        --
-        -- No, but seriously. Please read `:help ins-completion`, it is really good!
-        --
-        -- All presets have the following mappings:
-        -- <tab>/<s-tab>: move to right/left of your snippet expansion
-        -- <c-space>: Open menu or open docs if already open
-        -- <c-n>/<c-p> or <up>/<down>: Select next/previous item
-        -- <c-e>: Hide menu
-        -- <c-k>: Toggle signature help
-        --
-        -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'default',
 
-        -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
-        --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
+        -- no, but seriously. please read `:help ins-completion`, it is really good!
+        --
+        -- all presets have the following mappings:
+        -- <tab>/<s-tab>: move to right/left of your snippet expansion
+        -- <c-space>: open menu or open docs if already open
+        -- <c-n>/<c-p> or <up>/<down>: select next/previous item
+        -- <c-e>: hide menu
+        -- <c-k>: toggle signature help
+        --
+        -- see :h blink-cmp-config-keymap for defining your own keymap
+        preset = 'super-tab',
+
+        -- for more advanced luasnip keymaps (e.g. selecting choice nodes, expansion) see:
+        --    https://github.com/l3mon4d3/luasnip?tab=readme-ov-file#keymaps
       },
 
       appearance = {
-        -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-        -- Adjusts spacing to ensure icons are aligned
+        -- 'mono' (default) for 'nerd font mono' or 'normal' for 'nerd font'
+        -- adjusts spacing to ensure icons are aligned
         nerd_font_variant = 'mono',
       },
 
       completion = {
-        -- By default, you may press `<c-space>` to show the documentation.
-        -- Optionally, set `auto_show = true` to show the documentation after a delay.
+        -- by default, you may press `<c-space>` to show the documentation.
+        -- optionally, set `auto_show = true` to show the documentation after a delay.
         documentation = { auto_show = false, auto_show_delay_ms = 500 },
       },
 
@@ -1011,6 +1011,29 @@ require('lazy').setup({
     },
   },
 })
+
+-- Set clipboard to use system clipboard
+vim.opt.clipboard = 'unnamedplus'
+
+-- For Wayland with wl-clipboard
+vim.g.clipboard = {
+  name = 'wl-clipboard',
+  copy = {
+    ['+'] = 'wl-copy --type text/plain',
+    ['*'] = 'wl-copy --type text/plain --primary',
+  },
+  paste = {
+    ['+'] = 'wl-paste --no-newline',
+    ['*'] = 'wl-paste --no-newline --primary',
+  },
+  cache_enabled = true,
+}
+
+-- Better keybindings that work reliably
+vim.keymap.set({ 'n', 'v' }, '<Leader>y', '"+y', { desc = 'Copy to system clipboard' })
+vim.keymap.set({ 'n', 'v' }, '<Leader>Y', '"+Y', { desc = 'Copy line to system clipboard' })
+vim.keymap.set({ 'n', 'v' }, '<Leader>p', '"+p', { desc = 'Paste from system clipboard' })
+vim.keymap.set({ 'n', 'v' }, '<Leader>P', '"+P', { desc = 'Paste before from system clipboard' })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
